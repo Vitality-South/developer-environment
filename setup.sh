@@ -112,16 +112,16 @@ VSSRC_DIR=~/.vssrc
 GOLANG_VERSION=1.21.5                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.10.0               # https://nodejs.org/en/
-AWSCLI_VERSION=2.13.38               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.14.6                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=25.1                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.2                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.55.2         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.7/2023-11-14    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.164.0               # https://github.com/weaveworks/eksctl
+EKSCTL_VERSION=0.165.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.11            # https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
 HELM_VERSION=3.13.2                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.40.3                   # https://github.com/mikefarah/yq
+YQ_VERSION=v4.40.4                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.31.2              # https://github.com/kubernetes/kompose
 
 
