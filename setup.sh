@@ -266,13 +266,9 @@ mkdir -p ${BUILD_DIR} ${TARBALLS_DIR} ${VSBIN_DIR} ${VSSRC_DIR} $HOME/bin $HOME/
 # install or update nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
 
-if [ -z "${NVM_DIR:-}" ]
-then
-	export NVM_DIR="$HOME/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-fi
-
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm install ${NODEJS_VERSION}
 nvm use ${NODEJS_VERSION}
 VS_NPM_BIN=$HOME/.nvm/versions/node/v${NODEJS_VERSION}/bin/npm
