@@ -40,8 +40,8 @@ export VS_DEVENV_IS_SET=true
 # local bin
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
-# nodejs
-export PATH=$HOME/.vsenvbin/nodejs/bin:$PATH
+# nodejs - use nvm instead
+#export PATH=$HOME/.vsenvbin/nodejs/bin:$PATH
 
 # flutter
 export PATH=$HOME/.vssrc/flutter/bin:$HOME/.pub-cache/bin:$PATH
@@ -56,12 +56,17 @@ export PATH=$HOME/.yarn/bin:$PATH
 # Java home
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 
-# Load Angular CLI autocompletion.
-source <(ng completion script)
-
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
 EOF
 }
 
@@ -73,8 +78,8 @@ if ! grep -q "VS_DEVENV_IS_SET=" $HOME/.bashrc; then
 	# local bin
 	export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
-	# nodejs
-	export PATH=$HOME/.vsenvbin/nodejs/bin:$PATH
+	# nodejs - use nvm instead
+	#export PATH=$HOME/.vsenvbin/nodejs/bin:$PATH
 
 	# flutter
 	export PATH=$HOME/.vssrc/flutter/bin:$HOME/.pub-cache/bin:$PATH
@@ -109,23 +114,23 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.21.5                # https://go.dev/dl/
+GOLANG_VERSION=1.21.6                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
-NODEJS_VERSION=20.10.0               # https://nodejs.org/en/
-AWSCLI_VERSION=2.14.6                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=25.1                # https://github.com/protocolbuffers/protobuf
-RESTIC_VERSION=0.16.2                # https://github.com/restic/restic
+NODEJS_VERSION=20.11.0               # installed via nvm
+AWSCLI_VERSION=2.15.10               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=25.2                # https://github.com/protocolbuffers/protobuf
+RESTIC_VERSION=0.16.3                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.55.2         # https://github.com/golangci/golangci-lint
-KUBECTL_VERSION=1.27.7/2023-11-14    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.165.0               # https://github.com/weaveworks/eksctl
+KUBECTL_VERSION=1.27.9/2024-01-04    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+EKSCTL_VERSION=0.167.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.11            # https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
-HELM_VERSION=3.13.2                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.40.4                   # https://github.com/mikefarah/yq
+HELM_VERSION=3.13.3                  # https://github.com/helm/helm/releases
+YQ_VERSION=v4.40.5                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.31.2              # https://github.com/kubernetes/kompose
 
 
-NODEJS_ARCH=${MY_ARCH}
+#NODEJS_ARCH=${MY_ARCH}
 AWSCLI_ARCH=${MY_ARCH}
 GOLANG_ARCH=${MY_ARCH}
 PROTOBUF_ARCH=${MY_ARCH}
@@ -141,12 +146,11 @@ KOMPOSE_ARCH=${MY_ARCH}
 VS_GO_BIN=$HOME/.vsenvbin/go/bin/go
 VS_FLUTTER_BIN=$HOME/.vssrc/flutter/bin/flutter
 VS_DART_BIN=$HOME/.vssrc/flutter/bin/dart
-VS_NODEJS_BIN=$HOME/.vsenvbin/nodejs/bin/node
-VS_NPM_BIN=$HOME/.vsenvbin/nodejs/bin/npm
+#VS_NODEJS_BIN=$HOME/.vsenvbin/nodejs/bin/node
 
 if [[ "${MY_ARCH}" = "x86_64" || "${MY_ARCH}" = "amd64" ]]
 then
-  NODEJS_ARCH=x64
+#  NODEJS_ARCH=x64
   AWSCLI_ARCH=x86_64
   GOLANG_ARCH=amd64
   PROTOBUF_ARCH=x86_64
@@ -162,7 +166,7 @@ fi
 
 if [[ "${MY_ARCH}" = "aarch64" || "${MY_ARCH}" = "arm64" ]]
 then
-  NODEJS_ARCH=arm64
+#  NODEJS_ARCH=arm64
   AWSCLI_ARCH=aarch64
   GOLANG_ARCH=arm64
   PROTOBUF_ARCH=aarch_64
@@ -178,7 +182,7 @@ fi
 
 if [[ "${MY_OS}" = "Linux" || "${MY_OS}" = "linux" ]]
 then
-  NODEJS_OS=linux
+#  NODEJS_OS=linux
   AWSCLI_OS=linux
   GOLANG_OS=linux
   PROTOBUF_OS=linux
@@ -215,7 +219,7 @@ fi
 
 if [[ "${MY_OS}" = "Darwin" || "${MY_OS}" = "darwin" ]]
 then
-  NODEJS_OS=darwin
+#  NODEJS_OS=darwin
   AWSCLI_OS=darwin
   GOLANG_OS=darwin
   PROTOBUF_OS=osx
@@ -231,8 +235,8 @@ fi
 
 AWSCLI_FILENAME=awscli-exe-${AWSCLI_OS}-${AWSCLI_ARCH}.zip
 AWSCLI_ZIP=https://awscli.amazonaws.com/${AWSCLI_FILENAME}
-NODEJS_FILENAME=node-v${NODEJS_VERSION}-${NODEJS_OS}-${NODEJS_ARCH}.tar.xz
-NODEJS_ZIP=https://nodejs.org/dist/v${NODEJS_VERSION}/${NODEJS_FILENAME}
+#NODEJS_FILENAME=node-v${NODEJS_VERSION}-${NODEJS_OS}-${NODEJS_ARCH}.tar.xz
+#NODEJS_ZIP=https://nodejs.org/dist/v${NODEJS_VERSION}/${NODEJS_FILENAME}
 GOLANG_FILENAME=go${GOLANG_VERSION}.${GOLANG_OS}-${GOLANG_ARCH}.tar.gz
 GOLANG_ZIP=https://dl.google.com/go/${GOLANG_FILENAME}
 PROTOBUF_FILENAME=protoc-${PROTOBUF_VERSION}-${PROTOBUF_OS}-${PROTOBUF_ARCH}.zip
@@ -268,6 +272,10 @@ then
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fi
+
+nvm install ${NODEJS_VERSION}
+nvm use ${NODEJS_VERSION}
+VS_NPM_BIN=$HOME/.nvm/versions/node/v${NODEJS_VERSION}/bin/npm
 
 # get flutter if it's not downloaded
 if [ ! -d "${VSSRC_DIR}/flutter" ]
@@ -384,29 +392,29 @@ then
   echo "Done."
 fi
 
-# get nodejs
-if [[ ! -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
-then
-  echo "Downloading Node.js..."
-  curl -L -s -f -o ${TARBALLS_DIR}/${NODEJS_FILENAME} ${NODEJS_ZIP}
-  if [ $? -ne 0 ]
-  then
-    echo "ERROR downloading Node.js from ${NODEJS_ZIP}"
-    exit 1
-  fi
-  echo "Done."
-fi
+# # get nodejs
+# if [[ ! -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
+# then
+#   echo "Downloading Node.js..."
+#   curl -L -s -f -o ${TARBALLS_DIR}/${NODEJS_FILENAME} ${NODEJS_ZIP}
+#   if [ $? -ne 0 ]
+#   then
+#     echo "ERROR downloading Node.js from ${NODEJS_ZIP}"
+#     exit 1
+#   fi
+#   echo "Done."
+# fi
 
-if [[ ! -f "${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}" && -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
-then
-  echo "Updating Node.js..."
-  rm -rf ${VSBIN_DIR}/nodejs
-  rm -f ${TARBALLS_DIR}/nodejs-installed-*
-  tar -C ${VSBIN_DIR} -Jxf ${TARBALLS_DIR}/${NODEJS_FILENAME}
-  mv -f ${VSBIN_DIR}/node-v${NODEJS_VERSION}-${NODEJS_OS}-${NODEJS_ARCH} ${VSBIN_DIR}/nodejs
-  touch ${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}
-  echo "Done."
-fi
+# if [[ ! -f "${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}" && -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
+# then
+#   echo "Updating Node.js..."
+#   rm -rf ${VSBIN_DIR}/nodejs
+#   rm -f ${TARBALLS_DIR}/nodejs-installed-*
+#   tar -C ${VSBIN_DIR} -Jxf ${TARBALLS_DIR}/${NODEJS_FILENAME}
+#   mv -f ${VSBIN_DIR}/node-v${NODEJS_VERSION}-${NODEJS_OS}-${NODEJS_ARCH} ${VSBIN_DIR}/nodejs
+#   touch ${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}
+#   echo "Done."
+# fi
 
 # get golang
 if [ ! -f "${TARBALLS_DIR}/${GOLANG_FILENAME}" ]
