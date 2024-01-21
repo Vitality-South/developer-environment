@@ -2,12 +2,60 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
+set -euo pipefail
+
 # do not run as root
 if [[ $(id -u) -eq 0 ]]
 then
 	echo "Do not run as root"
 	exit 1
 fi
+
+doflutter=true
+dohelm=true
+dobazelisk=true
+
+showHelpMessage () {
+        echo "Usage: $0 [arguments]"
+        echo -e "\t-h\tShow this help message"
+        echo -e "\t-s\tSkip install/upgrade of the following options"
+	echo -e "\t\tflutter helm bazelisk"
+	echo -e "\t\tNote: -s can specified multiple times"
+	echo "Example of skipping both flutter and helm install/upgrade:"
+	echo "$0 -s flutter -s helm"
+}
+
+while getopts "hs:" opt
+do
+    case "${opt}" in
+	s)
+		case "${OPTARG}" in
+			flutter) doflutter=false;;
+			helm) dohelm=false;;
+			bazelisk) dobazelisk=false;;
+			*)
+				echo "Unknown skip option: $OPTARG"
+				showHelpMessage
+				exit 1
+				;;
+		esac
+		;;
+        h) 
+		showHelpMessage
+		exit 0
+		;;
+        ?)
+                echo "Unknown option" >&2
+		showHelpMessage
+                exit 1
+                ;;
+	:)
+		echo "Option -$OPTARG requires an argument." >&2
+		showHelpMessage
+		exit 1
+		;;
+    esac
+done
 
 set -euxo pipefail
 
@@ -117,17 +165,18 @@ VSSRC_DIR=~/.vssrc
 GOLANG_VERSION=1.21.6                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.11.0               # installed via nvm
-AWSCLI_VERSION=2.15.10               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.15.12               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=25.2                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.3                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.55.2         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.9/2024-01-04    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.167.0               # https://github.com/weaveworks/eksctl
-AWSIAMAUTH_VERSION=0.6.11            # https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
-HELM_VERSION=3.13.3                  # https://github.com/helm/helm/releases
+EKSCTL_VERSION=0.168.0               # https://github.com/weaveworks/eksctl
+AWSIAMAUTH_VERSION=0.6.14            # https://github.com/kubernetes-sigs/aws-iam-authenticator
+HELM_VERSION=3.14.0                  # https://github.com/helm/helm/releases
 YQ_VERSION=v4.40.5                   # https://github.com/mikefarah/yq
-KOMPOSE_VERSION=v1.31.2              # https://github.com/kubernetes/kompose
+KOMPOSE_VERSION=v1.32.0              # https://github.com/kubernetes/kompose
+CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
 
 
 #NODEJS_ARCH=${MY_ARCH}
@@ -142,6 +191,7 @@ AWSIAMAUTH_ARCH=${MY_ARCH}
 HELM_ARCH=${MY_ARCH}
 YQ_ARCH=${MY_ARCH}
 KOMPOSE_ARCH=${MY_ARCH}
+CLI53_ARCH=${MY_ARCH}
 
 VS_GO_BIN=$HOME/.vsenvbin/go/bin/go
 VS_FLUTTER_BIN=$HOME/.vssrc/flutter/bin/flutter
@@ -162,6 +212,7 @@ then
   HELM_ARCH=amd64
   YQ_ARCH=amd64
   KOMPOSE_ARCH=amd64
+  CLI53_ARCH=amd64
 fi
 
 if [[ "${MY_ARCH}" = "aarch64" || "${MY_ARCH}" = "arm64" ]]
@@ -178,6 +229,7 @@ then
   HELM_ARCH=arm64
   YQ_ARCH=arm64
   KOMPOSE_ARCH=arm64
+  CLI53_ARCH=arm64
 fi
 
 if [[ "${MY_OS}" = "Linux" || "${MY_OS}" = "linux" ]]
@@ -194,6 +246,7 @@ then
   HELM_OS=linux
   YQ_OS=linux
   KOMPOSE_OS=linux
+  CLI53_OS=linux
 
   # for android studio
   sudo dpkg --add-architecture i386
@@ -231,6 +284,7 @@ then
   HELM_OS=darwin
   YQ_OS=darwin
   KOMPOSE_OS=darwin
+  CLI53_OS=mac
 fi
 
 AWSCLI_FILENAME=awscli-exe-${AWSCLI_OS}-${AWSCLI_ARCH}.zip
@@ -250,6 +304,7 @@ AWSIAMAUTH_URL=https://github.com/kubernetes-sigs/aws-iam-authenticator/releases
 HELM_URL=https://get.helm.sh/helm-v${HELM_VERSION}-${HELM_OS}-${HELM_ARCH}.tar.gz
 YQ_URL=https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_OS}_${YQ_ARCH}
 KOMPOSE_URL=https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-${KOMPOSE_OS}-${KOMPOSE_ARCH}
+CLI53_URL=https://github.com/barnybug/cli53/releases/download/${CLI53_VERSION}/cli53-${CLI53_OS}-${CLI53_ARCH}
 
 # override with macOS specific changes
 if [[ "${MY_OS}" = "Darwin" || "${MY_OS}" = "darwin" ]]
@@ -273,22 +328,25 @@ nvm install ${NODEJS_VERSION}
 nvm use ${NODEJS_VERSION}
 VS_NPM_BIN=$HOME/.nvm/versions/node/v${NODEJS_VERSION}/bin/npm
 
-# get flutter if it's not downloaded
-if [ ! -d "${VSSRC_DIR}/flutter" ]
+if [ "${doflutter}" = true ]
 then
-  pushd ${VSSRC_DIR}
-  git clone https://github.com/flutter/flutter.git -b stable
-  popd
-fi
+	# get flutter if it's not downloaded
+	if [ ! -d "${VSSRC_DIR}/flutter" ]
+	then
+		pushd ${VSSRC_DIR}
+		git clone https://github.com/flutter/flutter.git -b stable
+		popd
+	fi
 
-# update flutter to latest stable
-if [ -d "${VSSRC_DIR}/flutter" ]
-then
-  pushd ${VSSRC_DIR}/flutter
-  git pull
-  $VS_FLUTTER_BIN precache
-  $VS_DART_BIN pub global activate protoc_plugin
-  popd
+	# update flutter to latest stable
+	if [ -d "${VSSRC_DIR}/flutter" ]
+	then
+		pushd ${VSSRC_DIR}/flutter
+		git pull
+		$VS_FLUTTER_BIN precache
+		$VS_DART_BIN pub global activate protoc_plugin
+		popd
+	fi
 fi
 
 # get AWS CLI v2
@@ -463,6 +521,12 @@ echo "Done."
 $VS_NPM_BIN install -g pnpm
 echo "Done."
 
+# update cli53
+echo "Updating cli53..."
+curl --silent --location -o ~/bin/cli53 "${CLI53_URL}"
+chmod a+x ~/bin/cli53
+echo "Done."
+
 # install vue cli
 echo "Updating vue cli..."
 yarn global add @vue/cli
@@ -558,10 +622,13 @@ chmod a+x ~/bin/protoc-gen-grpc-web
 echo "Done."
 
 # update helm
-echo "Updating helm..."
-curl --silent --location "${HELM_URL}" | tar zx --strip-components=1 -C ~/bin ${HELM_OS}-${HELM_ARCH}/helm
-chmod a+x ~/bin/helm
-echo "Done."
+if [ "${dohelm}" = true ]
+then
+	echo "Updating helm..."
+	curl --silent --location "${HELM_URL}" | tar zx --strip-components=1 -C ~/bin ${HELM_OS}-${HELM_ARCH}/helm
+	chmod a+x ~/bin/helm
+	echo "Done."
+fi
 
 # update yq
 echo "Updating yq..."
@@ -576,9 +643,12 @@ chmod a+x ~/bin/kompose
 echo "Done."
 
 # update bazelisk
-echo "Updating bazelisk..."
-$VS_NPM_BIN install -g @bazel/bazelisk
-echo "Done."
+if [ "${dobazelisk}" = true ]
+then
+	echo "Updating bazelisk..."
+	$VS_NPM_BIN install -g @bazel/bazelisk
+	echo "Done."
+fi
 
 # get protobuf-javascript/protoc-gen-js if it's not downloaded
 if [ ! -d "${VSSRC_DIR}/protobuf-javascript" ]
