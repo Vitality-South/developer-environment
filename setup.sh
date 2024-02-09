@@ -162,19 +162,19 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.21.6                # https://go.dev/dl/
+GOLANG_VERSION=1.22.0                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.11.0               # installed via nvm
-AWSCLI_VERSION=2.15.12               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.15.19               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=25.2                # https://github.com/protocolbuffers/protobuf
-RESTIC_VERSION=0.16.3                # https://github.com/restic/restic
+RESTIC_VERSION=0.16.4                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v1.55.2         # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v1.56.1         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.9/2024-01-04    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.168.0               # https://github.com/weaveworks/eksctl
+EKSCTL_VERSION=0.170.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.14            # https://github.com/kubernetes-sigs/aws-iam-authenticator
 HELM_VERSION=3.14.0                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.40.5                   # https://github.com/mikefarah/yq
+YQ_VERSION=v4.40.7                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.32.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
 
