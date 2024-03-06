@@ -13,13 +13,12 @@ fi
 
 doflutter=true
 dohelm=true
-dobazelisk=true
 
 showHelpMessage () {
         echo "Usage: $0 [arguments]"
         echo -e "\t-h\tShow this help message"
         echo -e "\t-s\tSkip install/upgrade of the following options"
-	echo -e "\t\tflutter helm bazelisk"
+	echo -e "\t\tflutter helm"
 	echo -e "\t\tNote: -s can specified multiple times"
 	echo "Example of skipping both flutter and helm install/upgrade:"
 	echo "$0 -s flutter -s helm"
@@ -32,7 +31,6 @@ do
 		case "${OPTARG}" in
 			flutter) doflutter=false;;
 			helm) dohelm=false;;
-			bazelisk) dobazelisk=false;;
 			*)
 				echo "Unknown skip option: $OPTARG"
 				showHelpMessage
@@ -169,7 +167,7 @@ AWSCLI_VERSION=2.15.19               # https://raw.githubusercontent.com/aws/aws
 PROTOBUF_VERSION=25.2                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.4                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v1.56.1         # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v1.56.2         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.9/2024-01-04    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
 EKSCTL_VERSION=0.170.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.14            # https://github.com/kubernetes-sigs/aws-iam-authenticator
@@ -643,20 +641,15 @@ chmod a+x ~/bin/kompose
 echo "Done."
 
 # update bazelisk
-if [ "${dobazelisk}" = true ]
-then
-	echo "Updating bazelisk..."
-	$VS_NPM_BIN install -g @bazel/bazelisk
-	echo "Done."
-fi
+echo "Updating bazelisk..."
+$VS_NPM_BIN install -g @bazel/bazelisk
+echo "Done."
 
-# get protobuf-javascript/protoc-gen-js if it's not downloaded
-if [ ! -d "${VSSRC_DIR}/protobuf-javascript" ]
-then
-  pushd ${VSSRC_DIR}
-  git clone https://github.com/protocolbuffers/protobuf-javascript.git
-  popd
-fi
+# get protobuf-javascript/protoc-gen-js
+pushd ${VSSRC_DIR}
+rm -rf protobuf-javascript
+git clone https://github.com/protocolbuffers/protobuf-javascript.git
+popd
 
 # update protobuf-javascript/protoc-gen-js to latest stable
 if [ -d "${VSSRC_DIR}/protobuf-javascript" ]
