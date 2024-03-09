@@ -562,7 +562,7 @@ echo "Done."
 
 # install golangci-lint
 echo "Updating golangci-lint..."
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${GOLANGCILINT_VERSION}
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $($VS_GO_BIN env GOPATH)/bin ${GOLANGCILINT_VERSION}
 echo "Done."
 
 # update protoc-go-inject-tag (tag generation for Go protobuf)
