@@ -162,7 +162,7 @@ VSSRC_DIR=~/.vssrc
 
 GOLANG_VERSION=1.22.1                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
-NODEJS_VERSION=20.11.0               # installed via nvm
+NODEJS_VERSION=20.11.1               # installed via nvm
 AWSCLI_VERSION=2.15.19               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=25.3                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.4                # https://github.com/restic/restic
