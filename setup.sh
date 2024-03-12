@@ -160,11 +160,11 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.22.0                # https://go.dev/dl/
+GOLANG_VERSION=1.22.1                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.11.0               # installed via nvm
 AWSCLI_VERSION=2.15.19               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=25.2                # https://github.com/protocolbuffers/protobuf
+PROTOBUF_VERSION=25.3                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.4                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.56.2         # https://github.com/golangci/golangci-lint
