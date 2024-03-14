@@ -194,6 +194,7 @@ CLI53_ARCH=${MY_ARCH}
 VS_GO_BIN=$HOME/.vsenvbin/go/bin/go
 VS_FLUTTER_BIN=$HOME/.vssrc/flutter/bin/flutter
 VS_DART_BIN=$HOME/.vssrc/flutter/bin/dart
+VS_BUN_BIN=$HOME/.bun/bin/bun
 #VS_NODEJS_BIN=$HOME/.vsenvbin/nodejs/bin/node
 
 if [[ "${MY_ARCH}" = "x86_64" || "${MY_ARCH}" = "amd64" ]]
@@ -713,7 +714,7 @@ echo "Done."
 # install bun
 echo "Updating bun"
 curl -fsSL https://bun.sh/install | bash
-bun upgrade || true
+$VS_BUN_BIN upgrade || true
 echo "Done."
 
 echo ""
