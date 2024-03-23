@@ -176,6 +176,8 @@ YQ_VERSION=v4.40.7                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.32.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
 
+TAILWINDCSS_CLI_VERSION=latest/download
+
 
 #NODEJS_ARCH=${MY_ARCH}
 AWSCLI_ARCH=${MY_ARCH}
@@ -190,6 +192,7 @@ HELM_ARCH=${MY_ARCH}
 YQ_ARCH=${MY_ARCH}
 KOMPOSE_ARCH=${MY_ARCH}
 CLI53_ARCH=${MY_ARCH}
+TAILWINDCSS_CLI_ARCH=${MY_ARCH}
 
 VS_GO_BIN=$HOME/.vsenvbin/go/bin/go
 VS_FLUTTER_BIN=$HOME/.vssrc/flutter/bin/flutter
@@ -212,6 +215,7 @@ then
   YQ_ARCH=amd64
   KOMPOSE_ARCH=amd64
   CLI53_ARCH=amd64
+  TAILWINDCSS_CLI_ARCH=x64
 fi
 
 if [[ "${MY_ARCH}" = "aarch64" || "${MY_ARCH}" = "arm64" ]]
@@ -229,6 +233,7 @@ then
   YQ_ARCH=arm64
   KOMPOSE_ARCH=arm64
   CLI53_ARCH=arm64
+  TAILWINDCSS_CLI_ARCH=arm64
 fi
 
 if [[ "${MY_OS}" = "Linux" || "${MY_OS}" = "linux" ]]
@@ -246,6 +251,7 @@ then
   YQ_OS=linux
   KOMPOSE_OS=linux
   CLI53_OS=linux
+  TAILWINDCSS_CLI_OS=linux
 
   # for android studio
   sudo dpkg --add-architecture i386
@@ -284,6 +290,7 @@ then
   YQ_OS=darwin
   KOMPOSE_OS=darwin
   CLI53_OS=mac
+  TAILWINDCSS_CLI_OS=macos
 fi
 
 AWSCLI_FILENAME=awscli-exe-${AWSCLI_OS}-${AWSCLI_ARCH}.zip
@@ -304,6 +311,7 @@ HELM_URL=https://get.helm.sh/helm-v${HELM_VERSION}-${HELM_OS}-${HELM_ARCH}.tar.g
 YQ_URL=https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_OS}_${YQ_ARCH}
 KOMPOSE_URL=https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VERSION}/kompose-${KOMPOSE_OS}-${KOMPOSE_ARCH}
 CLI53_URL=https://github.com/barnybug/cli53/releases/download/${CLI53_VERSION}/cli53-${CLI53_OS}-${CLI53_ARCH}
+TAILWINDCSS_CLI_URL=https://github.com/tailwindlabs/tailwindcss/releases/${TAILWINDCSS_CLI_VERSION}/tailwindcss-${TAILWINDCSS_CLI_OS}-${TAILWINDCSS_CLI_ARCH}
 
 # override with macOS specific changes
 if [[ "${MY_OS}" = "Darwin" || "${MY_OS}" = "darwin" ]]
@@ -444,30 +452,6 @@ then
   mkdir -p ${BUILD_DIR}
   echo "Done."
 fi
-
-# # get nodejs
-# if [[ ! -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
-# then
-#   echo "Downloading Node.js..."
-#   curl -L -s -f -o ${TARBALLS_DIR}/${NODEJS_FILENAME} ${NODEJS_ZIP}
-#   if [ $? -ne 0 ]
-#   then
-#     echo "ERROR downloading Node.js from ${NODEJS_ZIP}"
-#     exit 1
-#   fi
-#   echo "Done."
-# fi
-
-# if [[ ! -f "${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}" && -f "${TARBALLS_DIR}/${NODEJS_FILENAME}" ]]
-# then
-#   echo "Updating Node.js..."
-#   rm -rf ${VSBIN_DIR}/nodejs
-#   rm -f ${TARBALLS_DIR}/nodejs-installed-*
-#   tar -C ${VSBIN_DIR} -Jxf ${TARBALLS_DIR}/${NODEJS_FILENAME}
-#   mv -f ${VSBIN_DIR}/node-v${NODEJS_VERSION}-${NODEJS_OS}-${NODEJS_ARCH} ${VSBIN_DIR}/nodejs
-#   touch ${TARBALLS_DIR}/nodejs-installed-${NODEJS_VERSION}
-#   echo "Done."
-# fi
 
 # get golang
 if [ ! -f "${TARBALLS_DIR}/${GOLANG_FILENAME}" ]
@@ -699,6 +683,17 @@ echo "Done."
 # install taskfile.dev task tool
 echo "Updating Taskfile.dev task tool"
 $VS_GO_BIN install github.com/go-task/task/v3/cmd/task@latest
+echo "Done."
+
+# install hugo extended edition
+echo "Installing hugo..."
+CGO_ENABLED=1 $VS_GO_BIN install -tags extended github.com/gohugoio/hugo@latest
+echo "Done."
+
+# install tailwindcss cli
+echo "Installing tailwindcss cli..."
+curl -sL -o ~/bin/tailwindcss ${TAILWINDCSS_CLI_URL}
+chmod +x ~/bin/tailwindcss
 echo "Done."
 
 # npm global update
