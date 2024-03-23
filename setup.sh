@@ -86,9 +86,6 @@ export VS_DEVENV_IS_SET=true
 # local bin
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
-# nodejs - use nvm instead
-#export PATH=$HOME/.vsenvbin/nodejs/bin:$PATH
-
 # flutter
 export PATH=$HOME/.vssrc/flutter/bin:$HOME/.pub-cache/bin:$PATH
 
@@ -332,6 +329,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm install ${NODEJS_VERSION}
+nvm alias default ${NODEJS_VERSION}
 nvm use ${NODEJS_VERSION}
 VS_NPM_BIN=$HOME/.nvm/versions/node/v${NODEJS_VERSION}/bin/npm
 
@@ -678,6 +676,11 @@ echo "Done."
 # install Angular cli
 echo "Updating Angular CLI"
 $VS_NPM_BIN install -g @angular/cli
+echo "Done."
+
+# install sass
+echo "Updating sass"
+$VS_NPM_BIN install -g sass
 echo "Done."
 
 # install taskfile.dev task tool
