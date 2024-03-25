@@ -683,6 +683,11 @@ echo "Updating sass"
 $VS_NPM_BIN install -g sass
 echo "Done."
 
+# install blowfish-tools
+echo "Updating blowfish-tools"
+$VS_NPM_BIN install -g blowfish-tools
+echo "Done."
+
 # install taskfile.dev task tool
 echo "Updating Taskfile.dev task tool"
 $VS_GO_BIN install github.com/go-task/task/v3/cmd/task@latest
