@@ -693,6 +693,11 @@ echo "Updating Taskfile.dev task tool"
 $VS_GO_BIN install github.com/go-task/task/v3/cmd/task@latest
 echo "Done."
 
+# install cobra cli
+echo "Updating cobra cli"
+$VS_GO_BIN install github.com/spf13/cobra-cli@latest
+echo "Done."
+
 # install hugo extended edition
 echo "Installing hugo..."
 CGO_ENABLED=1 $VS_GO_BIN install -tags extended github.com/gohugoio/hugo@latest
