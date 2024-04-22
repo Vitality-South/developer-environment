@@ -774,6 +774,48 @@ echo "Updating Taskfile.dev task tool"
 $VS_GO_BIN install github.com/go-task/task/v3/cmd/task@latest
 echo "Done."
 
+# install gopls
+echo "Updating gopls" >&3
+echo "Updating gopls"
+$VS_GO_BIN install golang.org/x/tools/gopls@latest
+echo "Done."
+
+# install Go staticcheck
+echo "Updating Go staticcheck" >&3
+echo "Updating Go staticcheck"
+$VS_GO_BIN install honnef.co/go/tools/cmd/staticcheck@latest
+echo "Done."
+
+# install Go dlv
+echo "Updating Go dlv" >&3
+echo "Updating Go dlv"
+$VS_GO_BIN install github.com/go-delve/delve/cmd/dlv@latest
+echo "Done."
+
+# install Go gotests
+echo "Updating Go gotests" >&3
+echo "Updating Go gotests"
+$VS_GO_BIN install github.com/cweill/gotests/gotests@latest
+echo "Done."
+
+# install Go gomodifytags
+echo "Updating Go gomodifytags" >&3
+echo "Updating Go gomodifytags"
+$VS_GO_BIN install github.com/fatih/gomodifytags@latest
+echo "Done."
+
+# install Go impl
+echo "Updating Go impl" >&3
+echo "Updating Go impl"
+$VS_GO_BIN install github.com/josharian/impl@latest
+echo "Done."
+
+# install Go goplay
+echo "Updating Go goplay" >&3
+echo "Updating Go goplay"
+$VS_GO_BIN install github.com/haya14busa/goplay/cmd/goplay@latest
+echo "Done."
+
 # install cobra cli
 echo "Updating cobra cli" >&3
 echo "Updating cobra cli"
