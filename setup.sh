@@ -178,17 +178,17 @@ VSSRC_DIR=~/.vssrc
 GOLANG_VERSION=1.22.3                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.11.1               # installed via nvm
-AWSCLI_VERSION=2.15.57               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.16.0                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=27.0                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.4                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v1.58.2         # https://github.com/golangci/golangci-lint
-KUBECTL_VERSION=1.27.12/2024-04-19    # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.178.0               # https://github.com/weaveworks/eksctl
+GOLANGCILINT_VERSION=v1.59.0         # https://github.com/golangci/golangci-lint
+KUBECTL_VERSION=1.27.12/2024-04-19   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+EKSCTL_VERSION=0.180.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.20            # https://github.com/kubernetes-sigs/aws-iam-authenticator
 HELM_VERSION=3.15.1                  # https://github.com/helm/helm/releases
 YQ_VERSION=v4.44.1                   # https://github.com/mikefarah/yq
-KOMPOSE_VERSION=v1.33.0              # https://github.com/kubernetes/kompose
+KOMPOSE_VERSION=v1.34.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
 
 TAILWINDCSS_CLI_VERSION=latest/download
@@ -840,6 +840,12 @@ echo "Installing websocat" >&3
 echo "Installing websocat..."
 curl -sL -o ~/bin/websocat ${WEBSOCAT_URL}
 chmod +x ~/bin/websocat
+echo "Done."
+
+# install protoc-gen-doc
+echo "Updating protoc-gen-doc" >&3
+echo "Updating protoc-gen-doc"
+$VS_GO_BIN install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
 echo "Done."
 
 # npm global update
