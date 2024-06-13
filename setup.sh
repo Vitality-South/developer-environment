@@ -275,6 +275,11 @@ then
 
   echo "Installing linux OS updates via apt; sudo password may be needed here" >&3
 
+  export DEBIAN_FRONTEND=noninteractive
+  echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+  echo 'docker.io docker.io/restart boolean true' | sudo debconf-set-selections
+  echo 'docker-ce docker-ce/restart boolean true' | debconf-set-selections
+
   # for android studio
   sudo dpkg --add-architecture i386
 
