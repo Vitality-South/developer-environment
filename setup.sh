@@ -2,7 +2,11 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
+VS_DEV_VERSION=1.0.0
+
 set -euo pipefail
+
+echo "VS developer environment update version: ${VS_DEV_VERSION}"
 
 # do not run as root
 if [[ $(id -u) -eq 0 ]]
