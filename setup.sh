@@ -112,7 +112,7 @@ export PATH=$HOME/.vsenvbin/go/bin:$PATH
 export PATH=$HOME/go/bin:$PATH
 
 # yarn global install path
-export PATH=$HOME/.yarn/bin:$PATH
+#export PATH=$HOME/.yarn/bin:$PATH
 
 # Java home
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
@@ -150,7 +150,7 @@ if ! grep -q "VS_DEVENV_IS_SET=" $HOME/.bashrc; then
 	export PATH=$HOME/go/bin:$PATH
 
 	# yarn global install path
-	export PATH=$HOME/.yarn/bin:$PATH
+	#export PATH=$HOME/.yarn/bin:$PATH
 
 	# Java home
 	export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
@@ -181,16 +181,16 @@ VSSRC_DIR=~/.vssrc
 
 GOLANG_VERSION=1.22.5                # https://go.dev/dl/
 NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
-NODEJS_VERSION=20.11.1               # installed via nvm
-AWSCLI_VERSION=2.17.11               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+NODEJS_VERSION=20.15.1               # installed via nvm
+AWSCLI_VERSION=2.17.14               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=27.2                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.16.5                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.59.1         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.12/2024-04-19   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.185.0               # https://github.com/weaveworks/eksctl
-AWSIAMAUTH_VERSION=0.6.20            # https://github.com/kubernetes-sigs/aws-iam-authenticator
-HELM_VERSION=3.15.2                  # https://github.com/helm/helm/releases
+EKSCTL_VERSION=0.187.0               # https://github.com/weaveworks/eksctl
+AWSIAMAUTH_VERSION=0.6.22            # https://github.com/kubernetes-sigs/aws-iam-authenticator
+HELM_VERSION=3.15.3                  # https://github.com/helm/helm/releases
 YQ_VERSION=v4.44.2                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.34.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
@@ -545,10 +545,10 @@ $VS_NPM_BIN install -g npm@latest
 echo "Done."
 
 # install yarn
-echo "Updating yarn" >&3
-echo "Updating yarn..."
-$VS_NPM_BIN install -g yarn
-echo "Done."
+#echo "Updating yarn" >&3
+#echo "Updating yarn..."
+#$VS_NPM_BIN install -g yarn
+#echo "Done."
 
 # install pnpm
 echo "Updating pnpm" >&3
@@ -566,13 +566,13 @@ echo "Done."
 # install vue cli
 echo "Updating vue cli" >&3
 echo "Updating vue cli..."
-yarn global add @vue/cli
+$VS_NPM_BIN install -g @vue/cli
 echo "Done."
 
 # install quasar cli
 echo "Updating quasar cli" >&3
 echo "Updating quasar cli..."
-yarn global add @quasar/cli
+$VS_NPM_BIN i -g @quasar/cli
 echo "Done."
 
 # install hexo
@@ -864,10 +864,10 @@ $VS_NPM_BIN upgrade -g
 echo "Done."
 
 # yarn global update
-echo "Updating yarn global packages" >&3
-echo "Updating yarn global packages"
-yarn global upgrade
-echo "Done."
+#echo "Updating yarn global packages" >&3
+#echo "Updating yarn global packages"
+#yarn global upgrade
+#echo "Done."
 
 # install bun
 echo "Updating bun" >&3
