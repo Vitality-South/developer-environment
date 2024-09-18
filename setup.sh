@@ -67,7 +67,7 @@ exec 4>&2
 exec 1>~/.vs-dev-setup.log
 exec 2>&1
 
-set -euxo pipefail
+set -euo pipefail
 
 alertOnError() {
     echo "An error occurred on the last command, exiting..." >&4
@@ -179,19 +179,19 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.22.6                # https://go.dev/dl/
-NVM_VERSION=0.39.7                   # https://github.com/nvm-sh/nvm
+GOLANG_VERSION=1.23.1                # https://go.dev/dl/
+NVM_VERSION=0.40.1                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.15.1               # installed via nvm
-AWSCLI_VERSION=2.17.23               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=27.3                # https://github.com/protocolbuffers/protobuf
-RESTIC_VERSION=0.17.0                # https://github.com/restic/restic
+AWSCLI_VERSION=2.17.52               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=28.1                # https://github.com/protocolbuffers/protobuf
+RESTIC_VERSION=0.17.1                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v1.59.1         # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v1.61.0         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.15/2024-07-12   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.188.0               # https://github.com/weaveworks/eksctl
-AWSIAMAUTH_VERSION=0.6.22            # https://github.com/kubernetes-sigs/aws-iam-authenticator
-HELM_VERSION=3.15.3                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.44.2                   # https://github.com/mikefarah/yq
+EKSCTL_VERSION=0.190.0               # https://github.com/weaveworks/eksctl
+AWSIAMAUTH_VERSION=0.6.26            # https://github.com/kubernetes-sigs/aws-iam-authenticator
+HELM_VERSION=3.16.1                  # https://github.com/helm/helm/releases
+YQ_VERSION=v4.44.3                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.34.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
 
@@ -359,8 +359,21 @@ rm -rf ${BUILD_DIR}
 mkdir -p ${BUILD_DIR} ${TARBALLS_DIR} ${VSBIN_DIR} ${VSSRC_DIR} $HOME/bin $HOME/.local/bin
 
 # install or update nvm
-echo "Installing nvm" >&3
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
+echo "Installing or upgrading nvm"
+if [ -z "${NVM_DIR}" ]
+then
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
+else
+	if [ -d "${NVM_DIR}" ]
+	then
+		pushd ${NVM_DIR}
+		git fetch --tags origin
+		git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+		popd
+	else
+		echo "Warning: cannot install or upgrade nvm"
+	fi
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
