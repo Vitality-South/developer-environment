@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.1
-VS_DEV_LAST_UPDATED=2024-10-05
+VS_DEV_VERSION=1.0.2
+VS_DEV_LAST_UPDATED=2024-11-05
 
 set -euo pipefail
 
@@ -44,7 +44,7 @@ do
 				;;
 		esac
 		;;
-        h) 
+        h)
 		showHelpMessage
 		exit 0
 		;;
@@ -184,15 +184,15 @@ VSSRC_DIR=~/.vssrc
 GOLANG_VERSION=1.23.2                # https://go.dev/dl/
 NVM_VERSION=0.40.1                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.18.0                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=28.2                # https://github.com/protocolbuffers/protobuf
-RESTIC_VERSION=0.17.1                # https://github.com/restic/restic
+AWSCLI_VERSION=2.19.1                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=28.3                # https://github.com/protocolbuffers/protobuf
+RESTIC_VERSION=0.17.2                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.61.0         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2024-09-11   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.191.0               # https://github.com/weaveworks/eksctl
+EKSCTL_VERSION=0.194.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.6.27            # https://github.com/kubernetes-sigs/aws-iam-authenticator
-HELM_VERSION=3.16.1                  # https://github.com/helm/helm/releases
+HELM_VERSION=3.16.2                  # https://github.com/helm/helm/releases
 YQ_VERSION=v4.44.3                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.34.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
@@ -305,7 +305,7 @@ then
   sudo apt install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 
   # Java for Ionic
-  sudo apt install -y default-jre default-jdk openjdk-17-jre openjdk-17-jdk 
+  sudo apt install -y default-jre default-jdk openjdk-17-jre openjdk-17-jdk
 fi
 
 if [[ "${MY_OS}" = "Darwin" || "${MY_OS}" = "darwin" ]]
@@ -702,14 +702,14 @@ fi
 # update yq
 echo "Updating yq" >&3
 echo "Updating yq..."
-curl --silent --location -o ~/bin/yq "${YQ_URL}" 
+curl --silent --location -o ~/bin/yq "${YQ_URL}"
 chmod a+x ~/bin/yq
 echo "Done."
 
 # update kompose
 echo "Updating kompose" >&3
 echo "Updating kompose..."
-curl --silent --location -o ~/bin/kompose "${KOMPOSE_URL}" 
+curl --silent --location -o ~/bin/kompose "${KOMPOSE_URL}"
 chmod a+x ~/bin/kompose
 echo "Done."
 
