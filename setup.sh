@@ -181,12 +181,12 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.23.2                # https://go.dev/dl/
+GOLANG_VERSION=1.23.3                # https://go.dev/dl/
 NVM_VERSION=0.40.1                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.19.1                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.20.0                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=28.3                # https://github.com/protocolbuffers/protobuf
-RESTIC_VERSION=0.17.2                # https://github.com/restic/restic
+RESTIC_VERSION=0.17.3                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v1.61.0         # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2024-09-11   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
