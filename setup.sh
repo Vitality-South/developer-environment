@@ -181,21 +181,22 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.23.3                # https://go.dev/dl/
+GOLANG_VERSION=1.23.4                # https://go.dev/dl/
 NVM_VERSION=0.40.1                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.20.0                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=28.3                # https://github.com/protocolbuffers/protobuf
+AWSCLI_VERSION=2.22.19               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=29.2                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.17.3                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v1.61.0         # https://github.com/golangci/golangci-lint
-KUBECTL_VERSION=1.27.16/2024-09-11   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.194.0               # https://github.com/weaveworks/eksctl
-AWSIAMAUTH_VERSION=0.6.27            # https://github.com/kubernetes-sigs/aws-iam-authenticator
-HELM_VERSION=3.16.2                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.44.3                   # https://github.com/mikefarah/yq
-KOMPOSE_VERSION=v1.34.0              # https://github.com/kubernetes/kompose
-CLI53_VERSION=0.8.22                 # https://github.com/barnybug/cli53
+GOLANGCILINT_VERSION=v1.62.2         # https://github.com/golangci/golangci-lint
+KUBECTL_VERSION=1.27.16/2024-11-15   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+EKSCTL_VERSION=0.199.0               # https://github.com/weaveworks/eksctl
+AWSIAMAUTH_VERSION=0.6.29            # https://github.com/kubernetes-sigs/aws-iam-authenticator
+HELM_VERSION=3.16.4                  # https://github.com/helm/helm/releases
+YQ_VERSION=v4.44.6                   # https://github.com/mikefarah/yq
+KOMPOSE_VERSION=v1.35.0              # https://github.com/kubernetes/kompose
+CLI53_VERSION=0.8.23                 # https://github.com/barnybug/cli53
+PROTOBUFJSGEN_VERSION=3.21.4         # https://github.com/protocolbuffers/protobuf-javascript/releases
 
 TAILWINDCSS_CLI_VERSION=latest/download
 WEBSOCAT_VERSION=latest/download
@@ -216,6 +217,7 @@ KOMPOSE_ARCH=${MY_ARCH}
 CLI53_ARCH=${MY_ARCH}
 TAILWINDCSS_CLI_ARCH=${MY_ARCH}
 WEBSOCAT_ARCH=${MY_ARCH}
+PROTOBUFJSGEN_ARCH=${MY_ARCH}
 
 VS_GO_BIN=$HOME/.vsenvbin/go/bin/go
 VS_FLUTTER_BIN=$HOME/.vssrc/flutter/bin/flutter
@@ -240,6 +242,7 @@ then
   CLI53_ARCH=amd64
   TAILWINDCSS_CLI_ARCH=x64
   WEBSOCAT_ARCH=x86_64
+  PROTOBUFJSGEN_ARCH=x86_64
 fi
 
 if [[ "${MY_ARCH}" = "aarch64" || "${MY_ARCH}" = "arm64" ]]
@@ -259,6 +262,7 @@ then
   CLI53_ARCH=arm64
   TAILWINDCSS_CLI_ARCH=arm64
   WEBSOCAT_ARCH=aarch64
+  PROTOBUFJSGEN_ARCH=aarch_64
 fi
 
 if [[ "${MY_OS}" = "Linux" || "${MY_OS}" = "linux" ]]
@@ -278,6 +282,7 @@ then
   CLI53_OS=linux
   TAILWINDCSS_CLI_OS=linux
   WEBSOCAT_OS=unknown-linux-musl
+  PROTOBUFJSGEN_OS=linux
 
   echo "Installing linux OS updates via apt; sudo password may be needed here" >&3
 
@@ -325,6 +330,7 @@ then
   CLI53_OS=mac
   TAILWINDCSS_CLI_OS=macos
   WEBSOCAT_OS=apple-darwin
+  PROTOBUFJSGEN_OS=osx
 fi
 
 AWSCLI_FILENAME=awscli-exe-${AWSCLI_OS}-${AWSCLI_ARCH}.zip
@@ -347,6 +353,8 @@ KOMPOSE_URL=https://github.com/kubernetes/kompose/releases/download/${KOMPOSE_VE
 CLI53_URL=https://github.com/barnybug/cli53/releases/download/${CLI53_VERSION}/cli53-${CLI53_OS}-${CLI53_ARCH}
 TAILWINDCSS_CLI_URL=https://github.com/tailwindlabs/tailwindcss/releases/${TAILWINDCSS_CLI_VERSION}/tailwindcss-${TAILWINDCSS_CLI_OS}-${TAILWINDCSS_CLI_ARCH}
 WEBSOCAT_URL=https://github.com/vi/websocat/releases/${WEBSOCAT_VERSION}/websocat.${WEBSOCAT_ARCH}-${WEBSOCAT_OS}
+PROTOBUFJSGEN_FILENAME=protobuf-javascript-${PROTOBUFJSGEN_VERSION}-${PROTOBUFJSGEN_OS}-${PROTOBUFJSGEN_ARCH}.tar.gz
+PROTOBUFJSGEN_URL=https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOBUFJSGEN_VERSION}/${PROTOBUFJSGEN_FILENAME}
 
 # override with macOS specific changes
 if [[ "${MY_OS}" = "Darwin" || "${MY_OS}" = "darwin" ]]
@@ -471,6 +479,37 @@ then
   mv -f ${BUILD_DIR}/${RESTIC_FILENAME/.bz2/} ~/bin/restic
   chmod a+x ~/bin/restic
   touch ${TARBALLS_DIR}/restic-installed-${RESTIC_VERSION}
+
+  # clean build directory when done
+  rm -rf ${BUILD_DIR}
+  mkdir -p ${BUILD_DIR}
+  echo "Done."
+fi
+
+# get protobuf-gen-js
+if [ ! -f "${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME}" ]
+then
+  echo "Downloading protoc-gen-js" >&3
+  echo "Downloading protoc-gen-js..."
+  curl -L -s -f -o ${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME} ${PROTOBUFJSGEN_URL}
+  if [ $? -ne 0 ]
+  then
+    echo "ERROR downloading protobuf-gen-js from ${PROTOBUFJSGEN_URL}"
+    exit 1
+  fi
+  echo "Done."
+fi
+
+# install protobuf-gen-js
+if [[ ! -f "${TARBALLS_DIR}/protobufjsgen-installed-${PROTOBUFJSGEN_VERSION}" && -f "${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME}" ]]
+then
+  echo "Updating protoc-gen-js" >&3
+  echo "Updating protoc-gen-js..."
+  rm -rf ${VSBIN_DIR}/protobufjsgen
+  rm -f ${TARBALLS_DIR}/protobufjsgen-installed-*
+  tar -xzf ${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME} -C ${BUILD_DIR}
+  cp -f ${BUILD_DIR}/bin/protoc-gen-js ~/bin
+  touch ${TARBALLS_DIR}/protobufjsgen-installed-${PROTOBUFJSGEN_VERSION}
 
   # clean build directory when done
   rm -rf ${BUILD_DIR}
@@ -720,23 +759,23 @@ $VS_NPM_BIN install -g @bazel/bazelisk
 echo "Done."
 
 # get protobuf-javascript/protoc-gen-js
-echo "Updating protobuf-javascript/protoc-gen-js" >&3
-echo "Updating protobuf-javascript/protoc-gen-js..."
-pushd ${VSSRC_DIR}
-rm -rf protobuf-javascript
-git clone https://github.com/protocolbuffers/protobuf-javascript.git
-popd
+#echo "Updating protobuf-javascript/protoc-gen-js" >&3
+#echo "Updating protobuf-javascript/protoc-gen-js..."
+#pushd ${VSSRC_DIR}
+#rm -rf protobuf-javascript
+#git clone https://github.com/protocolbuffers/protobuf-javascript.git
+#popd
 
 # update protobuf-javascript/protoc-gen-js to latest stable
-if [ -d "${VSSRC_DIR}/protobuf-javascript" ]
-then
-  pushd ${VSSRC_DIR}/protobuf-javascript
-  git pull
-  bazel build //generator:protoc-gen-js
-  cp -f bazel-bin/generator/protoc-gen-js ~/bin
-  bazel clean --expunge
-  popd
-fi
+#if [ -d "${VSSRC_DIR}/protobuf-javascript" ]
+#then
+#  pushd ${VSSRC_DIR}/protobuf-javascript
+#  git pull
+#  bazel build //generator:protoc-gen-js
+#  cp -f bazel-bin/generator/protoc-gen-js ~/bin
+#  bazel clean --expunge
+#  popd
+#fi
 
 # update protoc-gen-connect-web
 echo "Updating protoc-gen-connect-web" >&3
