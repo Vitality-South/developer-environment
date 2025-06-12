@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.6
-VS_DEV_LAST_UPDATED=2025-05-10
+VS_DEV_VERSION=1.0.7
+VS_DEV_LAST_UPDATED=2025-06-12
 
 set -euo pipefail
 
@@ -181,7 +181,7 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.24.3                # https://go.dev/dl/
+GOLANG_VERSION=1.24.4                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
 AWSCLI_VERSION=2.27.12               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
