@@ -181,14 +181,14 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.24.4                # https://go.dev/dl/
+GOLANG_VERSION=1.24.5                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.27.49               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.27.56               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=31.1                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.18.0                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v2.2.1          # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v2.3.0          # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2025-01-10   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
 EKSCTL_VERSION=0.210.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.7.3             # https://github.com/kubernetes-sigs/aws-iam-authenticator
