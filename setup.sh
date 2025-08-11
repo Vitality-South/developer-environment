@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.8
-VS_DEV_LAST_UPDATED=2025-07-22
+VS_DEV_VERSION=1.0.9
+VS_DEV_LAST_UPDATED=2025-08-11
 
 set -euo pipefail
 
