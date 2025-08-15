@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.9
-VS_DEV_LAST_UPDATED=2025-08-11
+VS_DEV_VERSION=1.0.10
+VS_DEV_LAST_UPDATED=2025-08-15
 
 set -euo pipefail
 
@@ -181,11 +181,11 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.24.6                # https://go.dev/dl/
+GOLANG_VERSION=1.25.0                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
 AWSCLI_VERSION=2.28.7                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=31.1                # https://github.com/protocolbuffers/protobuf
+PROTOBUF_VERSION=32.0                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.18.0                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.3.1          # https://github.com/golangci/golangci-lint
