@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.10
-VS_DEV_LAST_UPDATED=2025-08-15
+VS_DEV_VERSION=1.0.11
+VS_DEV_LAST_UPDATED=2025-09-06
 
 set -euo pipefail
 
@@ -181,20 +181,20 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.25.0                # https://go.dev/dl/
+GOLANG_VERSION=1.25.1                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.28.7                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.28.25               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=32.0                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.18.0                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v2.3.1          # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v2.4.0          # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2025-01-10   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-EKSCTL_VERSION=0.210.0               # https://github.com/weaveworks/eksctl
-AWSIAMAUTH_VERSION=0.7.5             # https://github.com/kubernetes-sigs/aws-iam-authenticator
-HELM_VERSION=3.18.4                  # https://github.com/helm/helm/releases
+EKSCTL_VERSION=0.214.0               # https://github.com/weaveworks/eksctl
+AWSIAMAUTH_VERSION=0.7.6             # https://github.com/kubernetes-sigs/aws-iam-authenticator
+HELM_VERSION=3.18.6                  # https://github.com/helm/helm/releases
 YQ_VERSION=v4.47.1                   # https://github.com/mikefarah/yq
-KOMPOSE_VERSION=v1.36.0              # https://github.com/kubernetes/kompose
+KOMPOSE_VERSION=v1.37.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.25                 # https://github.com/barnybug/cli53
 PROTOBUFJSGEN_VERSION=3.21.4         # https://github.com/protocolbuffers/protobuf-javascript/releases
 
