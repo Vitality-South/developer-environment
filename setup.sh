@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.11
-VS_DEV_LAST_UPDATED=2025-09-06
+VS_DEV_VERSION=1.0.12
+VS_DEV_LAST_UPDATED=2025-09-14
 
 set -euo pipefail
 
@@ -584,6 +584,24 @@ echo "Done."
 echo "Updating protoc-gen-go" >&3
 echo "Updating protoc-gen-go..."
 $VS_GO_BIN install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+echo "Done."
+
+# update buf
+echo "Updating buf" >&3
+echo "Updating buf..."
+$VS_GO_BIN install github.com/bufbuild/buf/cmd/buf@latest
+echo "Done."
+
+# update grpcurl
+echo "Updating grpcurl" >&3
+echo "Updating grpcurl..."
+$VS_GO_BIN install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+echo "Done."
+
+# update protoc-gen-connect-go
+echo "Updating protoc-gen-connect-go" >&3
+echo "Updating protoc-gen-connect-go..."
+$VS_GO_BIN install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 echo "Done."
 
 # update protoc-gen-go-grpc Go gRPC for protobuf
