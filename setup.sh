@@ -183,12 +183,12 @@ VSSRC_DIR=~/.vssrc
 
 GOLANG_VERSION=1.25.1                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
-NODEJS_VERSION=20.18.0               # installed via nvm
-AWSCLI_VERSION=2.28.25               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=32.0                # https://github.com/protocolbuffers/protobuf
+NODEJS_VERSION=22.20.0               # installed via nvm
+AWSCLI_VERSION=2.31.3                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=32.1                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.18.0                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v2.4.0          # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v2.5.0          # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2025-01-10   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
 EKSCTL_VERSION=0.214.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.7.6             # https://github.com/kubernetes-sigs/aws-iam-authenticator
