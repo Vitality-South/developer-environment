@@ -181,7 +181,7 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.25.1                # https://go.dev/dl/
+GOLANG_VERSION=1.25.3                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=22.20.0               # installed via nvm
 AWSCLI_VERSION=2.31.3                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
@@ -193,7 +193,7 @@ KUBECTL_VERSION=1.27.16/2025-01-10   # https://docs.aws.amazon.com/eks/latest/us
 EKSCTL_VERSION=0.214.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.7.6             # https://github.com/kubernetes-sigs/aws-iam-authenticator
 HELM_VERSION=3.18.6                  # https://github.com/helm/helm/releases
-YQ_VERSION=v4.47.1                   # https://github.com/mikefarah/yq
+YQ_VERSION=v4.48.1                   # https://github.com/mikefarah/yq
 KOMPOSE_VERSION=v1.37.0              # https://github.com/kubernetes/kompose
 CLI53_VERSION=0.8.25                 # https://github.com/barnybug/cli53
 PROTOBUFJSGEN_VERSION=3.21.4         # https://github.com/protocolbuffers/protobuf-javascript/releases
