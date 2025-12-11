@@ -2,8 +2,8 @@
 
 # We support Linux, Mac, and Windows (if using WSL 2)
 
-VS_DEV_VERSION=1.0.20
-VS_DEV_LAST_UPDATED=2025-11-29
+VS_DEV_VERSION=1.0.21
+VS_DEV_LAST_UPDATED=2025-12-11
 
 set -euo pipefail
 
@@ -181,14 +181,14 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.25.4                # https://go.dev/dl/
+GOLANG_VERSION=1.25.5                # https://go.dev/dl/
 NVM_VERSION=0.40.3                   # https://github.com/nvm-sh/nvm
 NODEJS_VERSION=22.20.0               # installed via nvm
 AWSCLI_VERSION=2.32.6                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=33.1                # https://github.com/protocolbuffers/protobuf
+PROTOBUF_VERSION=33.2                # https://github.com/protocolbuffers/protobuf
 RESTIC_VERSION=0.18.0                # https://github.com/restic/restic
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
-GOLANGCILINT_VERSION=v2.6.2          # https://github.com/golangci/golangci-lint
+GOLANGCILINT_VERSION=v2.7.2          # https://github.com/golangci/golangci-lint
 KUBECTL_VERSION=1.27.16/2025-01-10   # https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
 EKSCTL_VERSION=0.214.0               # https://github.com/weaveworks/eksctl
 AWSIAMAUTH_VERSION=0.7.9             # https://github.com/kubernetes-sigs/aws-iam-authenticator
