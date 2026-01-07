@@ -819,6 +819,18 @@ echo "Updating protoc-gen-es..."
 $VS_NPM_BIN install -g @bufbuild/protoc-gen-es
 echo "Done."
 
+# update protoc-gen-connect-query
+echo "Updating protoc-gen-connect-query" >&3
+echo "Updating protoc-gen-connect-query..."
+$VS_NPM_BIN install -g @connectrpc/protoc-gen-connect-query
+echo "Done."
+
+# update protoc-gen-connect-vue
+echo "Updating protoc-gen-connect-vue" >&3
+echo "Updating protoc-gen-connect-vue..."
+$VS_NPM_BIN install -g @zachacious/protoc-gen-connect-vue
+echo "Done."
+
 # install https://github.com/timostamm/protobuf-ts
 echo "Updating protoc-gen-ts" >&3
 echo "Updating protoc-gen-ts..."
