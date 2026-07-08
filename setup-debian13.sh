@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.0.2
-VS_DEV_LAST_UPDATED=2026-05-04
+VS_DEV_VERSION=2.0.4
+VS_DEV_LAST_UPDATED=2026-07-07
 
 set -euo pipefail
 
@@ -43,9 +43,9 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.26.4                # https://go.dev/dl/
-AWSCLI_VERSION=2.34.63               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
-PROTOBUF_VERSION=35.0                # https://github.com/protocolbuffers/protobuf
+GOLANG_VERSION=1.26.5                # https://go.dev/dl/
+AWSCLI_VERSION=2.35.17               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.12.2         # https://github.com/golangci/golangci-lint
 AWSIAMAUTH_VERSION=0.7.14            # https://github.com/kubernetes-sigs/aws-iam-authenticator
