@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.0.4
-VS_DEV_LAST_UPDATED=2026-07-07
+VS_DEV_VERSION=2.0.5
+VS_DEV_LAST_UPDATED=2026-07-10
 
 set -euo pipefail
 
@@ -44,7 +44,7 @@ VSBIN_DIR=~/.vsenvbin
 VSSRC_DIR=~/.vssrc
 
 GOLANG_VERSION=1.26.5                # https://go.dev/dl/
-AWSCLI_VERSION=2.35.17               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.35.21               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.12.2         # https://github.com/golangci/golangci-lint
@@ -485,6 +485,18 @@ echo "Done."
 echo "Updating Go staticcheck" >&3
 echo "Updating Go staticcheck"
 $VS_GO_BIN install honnef.co/go/tools/cmd/staticcheck@latest
+echo "Done."
+
+# install Go govulncheck
+echo "Updating Go govulncheck" >&3
+echo "Updating Go govulncheck"
+$VS_GO_BIN install golang.org/x/vuln/cmd/govulncheck@latest
+echo "Done."
+
+# install Go gosec
+echo "Updating Go gosec" >&3
+echo "Updating Go gosec"
+$VS_GO_BIN install github.com/securego/gosec/v2/cmd/gosec@latest
 echo "Done."
 
 # install Go dlv
