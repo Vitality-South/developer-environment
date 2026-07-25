@@ -317,6 +317,12 @@ echo "Updating vue cli..."
 $VS_NPM_BIN install -g @vue/cli
 echo "Done."
 
+# install pm2
+echo "Updating pm2" >&3
+echo "Updating pm2..."
+$VS_NPM_BIN install -g pm2
+echo "Done."
+
 # install quasar cli
 echo "Updating quasar cli" >&3
 echo "Updating quasar cli..."
