@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.1.0
+VS_DEV_VERSION=2.1.1
 VS_DEV_LAST_UPDATED=2026-07-26
 
 set -euo pipefail
@@ -332,12 +332,6 @@ curl --silent --location -o ~/bin/cli53 "${CLI53_URL}"
 chmod a+x ~/bin/cli53
 echo "Done."
 
-# install vue cli
-echo "Updating vue cli" >&3
-echo "Updating vue cli..."
-$VS_NPM_BIN install -g @vue/cli
-echo "Done."
-
 # install pm2
 echo "Updating pm2" >&3
 echo "Updating pm2..."
@@ -578,6 +572,14 @@ echo "Done."
 echo "Updating protoc-gen-doc" >&3
 echo "Updating protoc-gen-doc"
 $VS_GO_BIN install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
+echo "Done."
+
+# remove globals we no longer install. Vue/Vite scaffolding needs no
+# globals: npm create vue@latest / npm create vite@latest fetch the
+# current scaffolder on demand (a global copy would only go stale).
+echo "Removing deprecated @vue/cli" >&3
+echo "Removing deprecated @vue/cli..."
+$VS_NPM_BIN uninstall -g @vue/cli
 echo "Done."
 
 # npm global update

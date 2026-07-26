@@ -32,5 +32,9 @@ default), bun, and the Go/npm tools at @latest. Detailed output goes to
 - provision.sh - baseline Debian packages via sudo apt (build tools,
   ripgrep/fd/fzf, jq, tmux, shellcheck, db clients, network debugging,
   imagemagick, ...) plus fd/bat name shims in ~/bin.
+
+New Vue or Vite projects need no global CLI - scaffold on demand with
+`npm create vue@latest` / `npm create vite@latest` (or `bun create vue`);
+these always fetch the current scaffolder.
 - old.setup.debian12.sh - the previous full Debian 12 script, kept for
   reference.
