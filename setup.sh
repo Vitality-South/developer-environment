@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.0.6
-VS_DEV_LAST_UPDATED=2026-07-25
+VS_DEV_VERSION=2.1.0
+VS_DEV_LAST_UPDATED=2026-07-26
 
 set -euo pipefail
 
@@ -11,8 +11,15 @@ echo "VS developer environment last updated on: ${VS_DEV_LAST_UPDATED}"
 # do not run as root
 if [[ $(id -u) -eq 0 ]]
 then
-	echo "Do not run as root"
-	exit 1
+  echo "Do not run as root"
+  exit 1
+fi
+
+# Linux (incl. WSL2) only
+if [[ "$(uname -s)" != "Linux" ]]
+then
+  echo "This script targets Linux / WSL2 only"
+  exit 1
 fi
 
 # Saving stdout's state
@@ -23,27 +30,18 @@ exec 4>&2
 exec 1>~/.vs-dev-setup.log
 exec 2>&1
 
-set -euo pipefail
+trap 'echo "Error near line ${LINENO} - see ~/.vs-dev-setup.log for details" >&4' ERR
 
-alertOnError() {
-    echo "An error occurred on the last command, exiting..." >&4
-}
-
-trap alertOnError ERR
-
-MY_OS=`uname -s`
-MY_UOS=`uname -o`
-MY_ARCH=`uname -m`
+MY_ARCH=$(uname -m)
 
 echo "Your architecture is ${MY_ARCH}" >&3
-echo "Your OS is ${MY_OS}" >&3
 
 BUILD_DIR=~/.vsenvbuild
 TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
-VSSRC_DIR=~/.vssrc
 
-GOLANG_VERSION=1.26.5                # https://go.dev/dl/
+NVM_VERSION=v0.40.6                  # https://github.com/nvm-sh/nvm/releases
+GOLANG_VERSION=1.26.5                # fallback only - latest stable is auto-detected below
 AWSCLI_VERSION=2.36.8                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
 GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
@@ -54,11 +52,19 @@ PROTOBUFJSGEN_VERSION=3.21.4         # https://github.com/protocolbuffers/protob
 TAILWINDCSS_CLI_VERSION=latest/download
 WEBSOCAT_VERSION=latest/download
 
-#NODEJS_ARCH=${MY_ARCH}
+# Go: always track the latest stable release
+GOLANG_LATEST="$(curl -fsSL 'https://go.dev/VERSION?m=text' 2>/dev/null | head -1 || true)"
+if [[ "${GOLANG_LATEST}" == go* ]]
+then
+  GOLANG_VERSION="${GOLANG_LATEST#go}"
+  echo "Latest stable Go is ${GOLANG_VERSION}" >&3
+else
+  echo "Could not reach go.dev - falling back to Go ${GOLANG_VERSION}" >&3
+fi
+
 AWSCLI_ARCH=${MY_ARCH}
 GOLANG_ARCH=${MY_ARCH}
 PROTOBUF_ARCH=${MY_ARCH}
-RESTIC_ARCH=${MY_ARCH}
 GRPCWEB_ARCH=${MY_ARCH}
 CLI53_ARCH=${MY_ARCH}
 TAILWINDCSS_CLI_ARCH=${MY_ARCH}
@@ -70,11 +76,9 @@ VS_NPM_BIN=npm
 
 if [[ "${MY_ARCH}" = "x86_64" || "${MY_ARCH}" = "amd64" ]]
 then
-#  NODEJS_ARCH=x64
   AWSCLI_ARCH=x86_64
   GOLANG_ARCH=amd64
   PROTOBUF_ARCH=x86_64
-  RESTIC_ARCH=amd64
   GRPCWEB_ARCH=x86_64
   CLI53_ARCH=amd64
   TAILWINDCSS_CLI_ARCH=x64
@@ -84,11 +88,9 @@ fi
 
 if [[ "${MY_ARCH}" = "aarch64" || "${MY_ARCH}" = "arm64" ]]
 then
-#  NODEJS_ARCH=arm64
   AWSCLI_ARCH=aarch64
   GOLANG_ARCH=arm64
   PROTOBUF_ARCH=aarch_64
-  RESTIC_ARCH=arm64
   GRPCWEB_ARCH=x86_64
   CLI53_ARCH=arm64
   TAILWINDCSS_CLI_ARCH=arm64
@@ -96,22 +98,14 @@ then
   PROTOBUFJSGEN_ARCH=aarch_64
 fi
 
-if [[ "${MY_OS}" = "Linux" || "${MY_OS}" = "linux" ]]
-then
-  AWSCLI_OS=linux
-  GOLANG_OS=linux
-  PROTOBUF_OS=linux
-  RESTIC_OS=linux
-  KUBECTL_OS=linux
-  EKSCTL_OS=Linux
-  GRPCWEB_OS=linux
-  HELM_OS=linux
-  KOMPOSE_OS=linux
-  CLI53_OS=linux
-  TAILWINDCSS_CLI_OS=linux
-  WEBSOCAT_OS=unknown-linux-musl
-  PROTOBUFJSGEN_OS=linux
-fi
+AWSCLI_OS=linux
+GOLANG_OS=linux
+PROTOBUF_OS=linux
+GRPCWEB_OS=linux
+CLI53_OS=linux
+TAILWINDCSS_CLI_OS=linux
+WEBSOCAT_OS=unknown-linux-musl
+PROTOBUFJSGEN_OS=linux
 
 AWSCLI_FILENAME=awscli-exe-${AWSCLI_OS}-${AWSCLI_ARCH}.zip
 AWSCLI_ZIP=https://awscli.amazonaws.com/${AWSCLI_FILENAME}
@@ -127,15 +121,65 @@ PROTOBUFJSGEN_FILENAME=protobuf-javascript-${PROTOBUFJSGEN_VERSION}-${PROTOBUFJS
 PROTOBUFJSGEN_URL=https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOBUFJSGEN_VERSION}/${PROTOBUFJSGEN_FILENAME}
 
 rm -rf ${BUILD_DIR}
-mkdir -p ${BUILD_DIR} ${TARBALLS_DIR} ${VSBIN_DIR} ${VSSRC_DIR} $HOME/bin $HOME/.local/bin
+mkdir -p ${BUILD_DIR} ${TARBALLS_DIR} ${VSBIN_DIR} $HOME/bin $HOME/.local/bin
+
+# First run on a fresh machine: wire PATH and tool env into ~/.bashrc once
+if ! grep -q "VS_DEVENV_IS_SET=" "$HOME/.bashrc"
+then
+  echo "Adding VS dev environment block to ~/.bashrc" >&3
+cat <<'EOF' >> "$HOME/.bashrc"
+
+export VS_DEVENV_IS_SET=true
+
+# local bin
+export PATH=$HOME/.local/bin:$HOME/bin:$PATH
+
+# golang
+export PATH=$HOME/.vsenvbin/go/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
+
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+EOF
+fi
+
+# install or update nvm (the installer handles both), then make the latest
+# LTS node our default
+echo "Updating nvm + latest LTS node" >&3
+echo "Updating nvm + latest LTS node..."
+export NVM_DIR="$HOME/.nvm"
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
+set +u
+\. "$NVM_DIR/nvm.sh"
+nvm install --lts
+nvm alias default 'lts/*'
+nvm use --lts
+set -u
+echo "Done."
+
+# install or update bun (latest)
+echo "Updating bun" >&3
+echo "Updating bun..."
+if [ -x "$HOME/.bun/bin/bun" ]
+then
+  "$HOME/.bun/bin/bun" upgrade
+else
+  curl -fsSL https://bun.sh/install | bash
+fi
+echo "Done."
 
 # get AWS CLI v2
 if [ ! -f "${TARBALLS_DIR}/${AWSCLI_FILENAME}" ]
 then
   echo "Downloading AWS cli v2" >&3
   echo "Downloading AWS CLI v2..."
-  curl -L -s -f -o ${TARBALLS_DIR}/${AWSCLI_FILENAME} ${AWSCLI_ZIP}
-  if [ $? -ne 0 ]
+  if ! curl -L -s -f -o ${TARBALLS_DIR}/${AWSCLI_FILENAME} ${AWSCLI_ZIP}
   then
     echo "ERROR downloading AWS CLI v2 from ${AWSCLI_ZIP}"
     exit 1
@@ -151,16 +195,9 @@ then
   rm -f ${TARBALLS_DIR}/awscli-installed-*
 
   curl -L -s -f -o ${TARBALLS_DIR}/${AWSCLI_FILENAME} ${AWSCLI_ZIP}
-
-  if [ "${MY_OS}" = "Darwin" ]
-  then
-    echo "sudo password may be needed here to install AWS cli" >&3
-    sudo installer -pkg ${TARBALLS_DIR}/${AWSCLI_FILENAME} -target /
-  else
-    unzip -q ${TARBALLS_DIR}/${AWSCLI_FILENAME} -d ${BUILD_DIR}
-    ${BUILD_DIR}/aws/install -i ${VSBIN_DIR}/awscli -b $HOME/bin --update
-    touch ${TARBALLS_DIR}/awscli-installed-${AWSCLI_VERSION}
-  fi
+  unzip -q ${TARBALLS_DIR}/${AWSCLI_FILENAME} -d ${BUILD_DIR}
+  ${BUILD_DIR}/aws/install -i ${VSBIN_DIR}/awscli -b $HOME/bin --update
+  touch ${TARBALLS_DIR}/awscli-installed-${AWSCLI_VERSION}
 
   # clean build directory when done
   rm -rf ${BUILD_DIR}
@@ -173,8 +210,7 @@ if [ ! -f "${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME}" ]
 then
   echo "Downloading protoc-gen-js" >&3
   echo "Downloading protoc-gen-js..."
-  curl -L -s -f -o ${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME} ${PROTOBUFJSGEN_URL}
-  if [ $? -ne 0 ]
+  if ! curl -L -s -f -o ${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME} ${PROTOBUFJSGEN_URL}
   then
     echo "ERROR downloading protobuf-gen-js from ${PROTOBUFJSGEN_URL}"
     exit 1
@@ -187,7 +223,6 @@ if [[ ! -f "${TARBALLS_DIR}/protobufjsgen-installed-${PROTOBUFJSGEN_VERSION}" &&
 then
   echo "Updating protoc-gen-js" >&3
   echo "Updating protoc-gen-js..."
-  rm -rf ${VSBIN_DIR}/protobufjsgen
   rm -f ${TARBALLS_DIR}/protobufjsgen-installed-*
   tar -xzf ${TARBALLS_DIR}/${PROTOBUFJSGEN_FILENAME} -C ${BUILD_DIR}
   cp -f ${BUILD_DIR}/bin/protoc-gen-js ~/bin
@@ -204,8 +239,7 @@ if [ ! -f "${TARBALLS_DIR}/${PROTOBUF_FILENAME}" ]
 then
   echo "Downloading Protobuf" >&3
   echo "Downloading Protobuf..."
-  curl -L -s -f -o ${TARBALLS_DIR}/${PROTOBUF_FILENAME} ${PROTOBUF_ZIP}
-  if [ $? -ne 0 ]
+  if ! curl -L -s -f -o ${TARBALLS_DIR}/${PROTOBUF_FILENAME} ${PROTOBUF_ZIP}
   then
     echo "ERROR downloading Protobuf from ${PROTOBUF_ZIP}"
     exit 1
@@ -217,7 +251,6 @@ if [[ ! -f "${TARBALLS_DIR}/protobuf-installed-${PROTOBUF_VERSION}" && -f "${TAR
 then
   echo "Updating Protobuf" >&3
   echo "Updating Protobuf..."
-  rm -rf ${VSBIN_DIR}/protobuf
   rm -f ${TARBALLS_DIR}/protobuf-installed-*
   unzip -q ${TARBALLS_DIR}/${PROTOBUF_FILENAME} -d ${BUILD_DIR}
   cp -f ${BUILD_DIR}/bin/protoc ~/bin
@@ -237,17 +270,17 @@ if [ ! -f "${TARBALLS_DIR}/${GOLANG_FILENAME}" ]
 then
   echo "Downloading golang" >&3
   echo "Downloading golang..."
-  curl -L -s -f -o ${TARBALLS_DIR}/${GOLANG_FILENAME} ${GOLANG_ZIP}
-  if [ $? -ne 0 ]
+  if ! curl -L -s -f -o ${TARBALLS_DIR}/${GOLANG_FILENAME} ${GOLANG_ZIP}
   then
     echo "ERROR downloading Golang from ${GOLANG_ZIP}"
+    exit 1
   fi
   echo "Done."
 fi
 
 if [[ ! -f "${TARBALLS_DIR}/go-installed-${GOLANG_VERSION}" && -f "${TARBALLS_DIR}/${GOLANG_FILENAME}" ]]
 then
-  echo "Updating golang" >&3
+  echo "Updating golang to ${GOLANG_VERSION}" >&3
   echo "Updating Golang..."
   rm -rf ${VSBIN_DIR}/go
   rm -f ${TARBALLS_DIR}/go-installed-*
@@ -255,12 +288,6 @@ then
   touch ${TARBALLS_DIR}/go-installed-${GOLANG_VERSION}
   echo "Done."
 fi
-
-# update golint
-echo "Updating golint" >&3
-echo "Updating golint..."
-$VS_GO_BIN install golang.org/x/lint/golint@latest
-echo "Done."
 
 # update protoc-gen-go Protobuf for Go
 echo "Updating protoc-gen-go" >&3
@@ -356,7 +383,7 @@ echo "Done."
 # install golangci-lint
 echo "Updating golangci-lint" >&3
 echo "Updating golangci-lint..."
-curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin ${GOLANGCILINT_VERSION}
+curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b "$($VS_GO_BIN env GOPATH)/bin" ${GOLANGCILINT_VERSION}
 echo "Done."
 
 # update protoc-go-inject-tag (tag generation for Go protobuf)
@@ -393,7 +420,6 @@ else
   git clone https://github.com/googleapis/googleapis.git $HOME/.vsgoogleapis
 fi
 echo "Done."
-
 
 # update protoc-gen-grpc-web
 echo "Updating protoc-gen-grpc-web" >&3
@@ -541,7 +567,7 @@ curl -sL -o ~/bin/tailwindcss ${TAILWINDCSS_CLI_URL}
 chmod +x ~/bin/tailwindcss
 echo "Done."
 
-# install  websocat
+# install websocat
 echo "Installing websocat" >&3
 echo "Installing websocat..."
 curl -sL -o ~/bin/websocat ${WEBSOCAT_URL}
@@ -559,8 +585,6 @@ echo "Updating npm global packages" >&3
 echo "Updating npm global packages"
 $VS_NPM_BIN upgrade -g
 echo "Done."
-
-set +x
 
 # Restore stdout and stderr to original state
 exec 1>&3
