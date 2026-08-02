@@ -542,12 +542,6 @@ echo "Updating cobra cli"
 $VS_GO_BIN install github.com/spf13/cobra-cli@latest
 echo "Done."
 
-# install hugo extended edition
-echo "Installing hugo extended edition" >&3
-echo "Installing hugo extended edition..."
-CGO_ENABLED=1 $VS_GO_BIN install -tags extended github.com/gohugoio/hugo@latest
-echo "Done."
-
 # install tailwindcss cli
 echo "Installing tailwindcss cli" >&3
 echo "Installing tailwindcss cli..."
