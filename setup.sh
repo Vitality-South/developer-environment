@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.1.1
-VS_DEV_LAST_UPDATED=2026-07-26
+VS_DEV_VERSION=2.1.2
+VS_DEV_LAST_UPDATED=2026-08-02
 
 set -euo pipefail
 
@@ -42,9 +42,9 @@ VSBIN_DIR=~/.vsenvbin
 
 NVM_VERSION=v0.40.6                  # https://github.com/nvm-sh/nvm/releases
 GOLANG_VERSION=1.26.5                # fallback only - latest stable is auto-detected below
-AWSCLI_VERSION=2.36.8                # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.36.14               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
-GRPCWEB_VERSION=1.5.0                # https://github.com/grpc/grpc-web
+GRPCWEB_VERSION=2.0.2                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.12.2         # https://github.com/golangci/golangci-lint
 CLI53_VERSION=0.9.0                  # https://github.com/barnybug/cli53
 PROTOBUFJSGEN_VERSION=3.21.4         # https://github.com/protocolbuffers/protobuf-javascript/releases
@@ -342,12 +342,6 @@ echo "Done."
 echo "Updating quasar cli" >&3
 echo "Updating quasar cli..."
 $VS_NPM_BIN i -g @quasar/cli
-echo "Done."
-
-# install hexo
-echo "Updating hexo " >&3
-echo "Updating hexo..."
-$VS_NPM_BIN install -g hexo-cli
 echo "Done."
 
 # install eslint
