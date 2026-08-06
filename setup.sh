@@ -42,7 +42,7 @@ VSBIN_DIR=~/.vsenvbin
 
 NVM_VERSION=v0.40.6                  # https://github.com/nvm-sh/nvm/releases
 GOLANG_VERSION=1.26.5                # fallback only - latest stable is auto-detected below
-AWSCLI_VERSION=2.36.14               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+AWSCLI_VERSION=2.36.17               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
 GRPCWEB_VERSION=2.0.2                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.12.2         # https://github.com/golangci/golangci-lint
@@ -540,6 +540,12 @@ echo "Done."
 echo "Updating cobra cli" >&3
 echo "Updating cobra cli"
 $VS_GO_BIN install github.com/spf13/cobra-cli@latest
+echo "Done."
+
+# install telnyx cli
+echo "Updating telnyx cli" >&3
+echo "Updating telnyx cli"
+$VS_GO_BIN install github.com/team-telnyx/telnyx-cli/cmd/telnyx@latest
 echo "Done."
 
 # install tailwindcss cli
