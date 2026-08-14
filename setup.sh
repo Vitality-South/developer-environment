@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VS_DEV_VERSION=2.1.2
-VS_DEV_LAST_UPDATED=2026-08-02
+VS_DEV_VERSION=2.1.3
+VS_DEV_LAST_UPDATED=2026-08-13
 
 set -euo pipefail
 
@@ -41,8 +41,8 @@ TARBALLS_DIR=~/.vsenvtarballs
 VSBIN_DIR=~/.vsenvbin
 
 NVM_VERSION=v0.40.6                  # https://github.com/nvm-sh/nvm/releases
-GOLANG_VERSION=1.26.5                # fallback only - latest stable is auto-detected below
-AWSCLI_VERSION=2.36.17               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
+GOLANG_VERSION=1.26.6                # fallback only - latest stable is auto-detected below
+AWSCLI_VERSION=2.36.23               # https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst
 PROTOBUF_VERSION=35.1                # https://github.com/protocolbuffers/protobuf
 GRPCWEB_VERSION=2.0.2                # https://github.com/grpc/grpc-web
 GOLANGCILINT_VERSION=v2.12.2         # https://github.com/golangci/golangci-lint
